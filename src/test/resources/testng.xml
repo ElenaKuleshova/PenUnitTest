@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Suit">
+    <test name="Test methods">
+        <classes>
+            <class name="WriteAndIsWorkTest"/>
+            <class name="DoSomethingElseTest"/>
+        </classes>
+    </test>
+</suite>

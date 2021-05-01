@@ -1,9 +1,26 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
-<suite name="Suit">
-    <test name="Test methods">
+<suite name="Testing All Pen methods">
+    <test name="PositiveTests">
+        <groups>
+            <run>
+                <exclude name="negative"/>
+            </run>
+        </groups>
+
         <classes>
-            <class name="WriteAndIsWorkTest"/>
+            <class name="PenTests"/>
             <class name="DoSomethingElseTest"/>
         </classes>
     </test>
-</suite>
+    <test name="NegativeTests">
+        <groups>
+            <run>
+                <include name="negative"/>
+            </run>
+        </groups>
+
+        <classes>
+            <class name="PenTests"/>
+        </classes>
+    </test>
+   </suite>

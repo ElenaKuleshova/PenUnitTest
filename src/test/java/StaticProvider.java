@@ -1,65 +1,79 @@
 import org.testng.annotations.DataProvider;
 
+import java.lang.reflect.Method;
+
 public class StaticProvider {
 
-    @DataProvider(name="ConstructorWith1Or2Params")
-    public static Object[][] getConstructorWith1Or2Params() {
-        return new Object[][]{
-                {new Pen(120)},
-                {new Pen(120, 2.5)}
-
-        };
-    }
-
-    @DataProvider (name="ConstructorWith3Params")
-    public static Object[][] getConstructorWith3Params() {
-        return new Object[][]{
-                {120, 2.5, "White"},
-                {1000, 1, ""},
-                {0,0, "Green"}
-        };
-    }
-
-    @DataProvider(name="AllConstructorTypesWithPositiveInkContainer")
-    public static Object[][] getPositiveInkContainerFromAllConstructors() {
-        return new Object[][]{
+    @DataProvider(name = "getPenObjects")
+    public static Object[][] getPenObjects() {
+                return new Object[][]{
                 {new Pen(1)},
                 {new Pen(120, 2.5)},
-                {new Pen(1200, 2.5, "White")}
-        };
-    }
-    @DataProvider(name="AllConstructorTypesWithNegativeOrZeroInkContainer")
-    public static Object[][] getNegativeOrZeroInkContainerFromAllConstructors() {
-        return new Object[][]{
-                {new Pen(-1)},
-                {new Pen(0, 2.5)},
-                {new Pen(-1200, 2.5, "White")}
+                {new Pen(1200, 2.5, "")}
         };
     }
 
-    @DataProvider(name = "getWriteDataConstructor1")
-    public static Object[][] getWriteDataConstructor1() {
+
+    @DataProvider(name = "provideInkContainerValue")
+    public static Object[][] provideInkContainerValue() {
         return new Object[][]{
-                {20, "abcde", "abcde"},
-                {10, "1234567891", "1234567891"},//check boundary value
-                {6, "abcdefghijklnm", "abcdef"},//check partofWord when sizeWord>inkContainer
-                {-1, "abcd12", ""},//isWork == false
-                {0, "asd", ""},//isWork ==false
-                {5, " 12345 ", "12345"},//check spaces before and after word
-                {2, "  ", ""},//check only spaces
-                {10, "Some txt\n", "Some txt\n"}
+                {10},
+                {0},
+                {-10}
+        };
+    }
+
+    @DataProvider(name = "providePenObjectWithColor")
+    public static Object[][] providePenObjectWithColor() {
+        return new Object[][]{
+                {100, 3, "Olive"}
+        };
+    }
+
+    @DataProvider(name = "provideWriteTestWithNegativeData")
+    public static Object[][] provideWriteTestWithNegativeData() {
+        return new Object[][]{
+                {new Pen(4), "", ""},
+                {new Pen(10), null, ""},
+                {new Pen(3), " 123", "123"},
+                {new Pen(3, 0), "abcde123", ""},
+                {new Pen(1, -3), "abc", ""}
 
         };
     }
-    @DataProvider(name = "getWriteDataConstructor2")
-    public static Object[][] getWriteDataConstructor2() {
-        return new Object[][]{
-                {10, 2.1, "12345", "12345"},//check partofWord when sizeWord>inkContainer -->StringIndexOutOfBoundException
-                {2, 0.5, "abc", "abc"},
-                {1, 0.5, "ab", "ab"},
-                {1, 0.5, "abc", "a"},//это конечно очень странно, что ёмкость одна и та же, но пишем теперь только а, а не ab
-                {4, 1.1, "abcd", "abcd"}// по скользкой дорожке, но проходишь..
 
-        };
+    @DataProvider(name = "provideWriteTestWithPositiveData")
+    public static Object[][] provideWriteTestWithPositiveData(Method m) {
+        if (m.getName().equalsIgnoreCase("checkWriteReturnsEmptyString")) {
+            return new Object[][]{
+                    {new Pen(-100), "Any word"},
+                    {new Pen(-1000, 2.5), "asdasd"}
+            };
+        }
+        if (m.getName().equalsIgnoreCase("checkWriteReturnsWord")) {
+            return new Object[][]{
+                    {new Pen(20, 1.0), "asd"},
+                    {new Pen(3, 1.0), "asd"},
+                    {new Pen(3, 0.9), "asd"},
+                    {new Pen(3, 1.1), "as"},
+                    {new Pen(3, 1.5), "asd"},
+                    {new Pen(4, 2.0), "we"}
+            };
+        }
+        if  (m.getName().equalsIgnoreCase("checkWriteReturnsPartOfWord")) {
+            return new Object[][]{
+                    {new Pen(6), "abcdefghijklnm", "abcdef"},
+                    {new Pen(1, 0.5), "abc", "a"},
+                    {new Pen(5, 2), "123", "12"}
+
+            };
+        }
+        else {
+            return new Object[][]{
+                    {new Pen (100), "Hello!", "Hello!"}
+            };
+        }
+
     }
 }
+

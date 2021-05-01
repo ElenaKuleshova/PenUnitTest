@@ -1,6 +1,5 @@
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -15,28 +14,16 @@ public class DoSomethingElseTest {
 @BeforeMethod
     public void setUpStream() {
         System.setOut(new PrintStream(this.consoleContent));
-
     }
 
-    @Test (dataProvider = "ConstructorWith1Or2Params", dataProviderClass = StaticProvider.class)
-    public void testDoSomethingElse (Pen pen){
-        //Pen obj = new Pen (inkContainerValue);
+    @Test (dataProvider = "getPenObjects", dataProviderClass = StaticProvider.class)
+    public void testDoSomethingElsePrintsColor (Pen pen) {
         pen.doSomethingElse();
-        assertEquals(consoleContent.toString().trim(), "BLUE");
+        assertNotEquals(consoleContent.toString().trim(), null);
     }
-
-        @Test(dataProvider = "ConstructorWith3Params",  dataProviderClass = StaticProvider.class)
-
-        public void testDoSomethingElse(int inkCont, double size, String color) {
-            Pen obj = new Pen (inkCont, size, color);
-            obj.doSomethingElse();
-            assertEquals(consoleContent.toString().trim(), color);
-        }
-
 @AfterMethod
     public void restoreStream() {
-        System.setOut(this.originalOut);
-        this.consoleContent = new ByteArrayOutputStream();
-    }
-
+    System.setOut(this.originalOut);
+    this.consoleContent = new ByteArrayOutputStream();
+}
 }

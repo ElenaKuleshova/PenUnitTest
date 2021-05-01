@@ -63,7 +63,7 @@ public class StaticProvider {
         if  (m.getName().equalsIgnoreCase("checkWriteReturnsPartOfWord")) {
             return new Object[][]{
                     {new Pen(6), "abcdefghijklnm", "abcdef"},
-                    {new Pen(1, 0.5), "abc", "a"},
+                    {new Pen(1, 0.5), "abc", "ab"},
                     {new Pen(5, 2), "123", "12"}
 
             };
